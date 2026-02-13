@@ -5,17 +5,8 @@ import {
   MdHome,
   MdLock,
   MdOutlineShoppingCart,
+  MdStorefront, // Icon for Products
 } from 'react-icons/md';
-
-// Admin Imports
-// import MainDashboard from './pages/admin/default';
-// import NFTMarketplace from './pages/admin/nft-marketplace';
-// import Profile from './pages/admin/profile';
-// import DataTables from './pages/admin/data-tables';
-// import RTL from './pages/rtl/rtl-default';
-
-// Auth Imports
-// import SignInCentered from './pages/auth/sign-in';
 import { IRoute } from 'types/navigation';
 
 const routes: IRoute[] = [
@@ -25,32 +16,26 @@ const routes: IRoute[] = [
     path: '/default',
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
   },
-  {
-  name: 'Users',
-  layout: '/admin',
-  path: '/users',
-  icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-},
 
   {
-    name: 'NFT Marketplace',
+    name: 'Orders',
     layout: '/admin',
-    path: '/nft-marketplace',
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
-    secondary: true,
+    path: '/orders',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
   },
+
+  {
+    name: 'Products',        // ✅ New menu item
+    layout: '/admin',
+    path: '/products',       // This will go to /admin/products
+    icon: <Icon as={MdStorefront} width="20px" height="20px" color="inherit" />,
+  },
+
   {
     name: 'Data Tables',
     layout: '/admin',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     path: '/data-tables',
+    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
   },
   {
     name: 'Profile',

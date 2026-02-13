@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Chakra imports
 import {
@@ -38,6 +38,12 @@ export default function Banner(props: { [x: string]: any }) {
 
 	// Ellipsis modals
 	const { isOpen: isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure();
+
+	// Hydration fix
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => setMounted(true), []);
+
+	if (!mounted) return null; // Do not render on server
 
 	return (
 		<Menu isOpen={isOpen1} onClose={onClose1}>

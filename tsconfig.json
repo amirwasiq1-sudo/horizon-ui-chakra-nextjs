@@ -30,9 +30,11 @@
     "downlevelIteration": true,
     "baseUrl": "src",
     "paths": {
-      "@assets/*": [
-        "./src/assetsassets/*"
-      ]
+      "@assets/*": ["assets/*"],
+      "@lib/*": ["lib/*"],
+      "@models/*": ["models/*"],
+      "@components/*": ["components/*"],
+      "@api/*": ["app/api/*"]
     },
     "incremental": true,
     "plugins": [
