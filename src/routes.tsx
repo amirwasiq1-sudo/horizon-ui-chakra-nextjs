@@ -32,12 +32,6 @@ const routes: IRoute[] = [
   },
 
   {
-    name: 'Data Tables',
-    layout: '/admin',
-    path: '/data-tables',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-  },
-  {
     name: 'Profile',
     layout: '/admin',
     path: '/profile',
