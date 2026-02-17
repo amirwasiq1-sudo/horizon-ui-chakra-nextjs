@@ -31,7 +31,7 @@ export default function Conversion(props: { [x: string]: any }) {
 				</Select>
 			</Flex>
 
-			<PieChart h='100%' w='100%' chartData={pieChartData} chartOptions={pieChartOptions} />
+			<PieChart height='100%' width='100%' chartData={pieChartData} chartOptions={pieChartOptions} />
 			<Card
 				bg={cardColor}
 				flexDirection='row'

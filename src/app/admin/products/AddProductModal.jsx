@@ -19,6 +19,7 @@ import {
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import axios from 'axios';
+import Image from 'next/image'; // ✅ Import Next.js Image
 
 export default function AddProductModal({ isOpen, onClose, refreshProducts }) {
   const [loading, setLoading] = useState(false);
@@ -104,32 +105,22 @@ export default function AddProductModal({ isOpen, onClose, refreshProducts }) {
 
         const uploadRes = await fetch(
           'https://api.cloudinary.com/v1_1/dux7wcmnb/image/upload',
-          {
-            method: 'POST',
-            body: formData,
-          }
+          { method: 'POST', body: formData }
         );
 
         const data = await uploadRes.json();
-
-        if (!data.secure_url) {
-          throw new Error('Cloudinary upload failed');
-        }
-
+        if (!data.secure_url) throw new Error('Cloudinary upload failed');
         imageUrl = data.secure_url;
       }
 
-      // ✅ Payload matching Product schema EXACTLY
       const payload = {
         name: product.name,
         category: product.category,
         image: imageUrl,
         description: '',
-
         basePrice: Number(product.price),
         hasDiscount: false,
         discountPrice: null,
-
         isVariable: product.headings.length > 0,
         optionGroups: product.headings.map((h) => ({
           title: h.title,
@@ -140,30 +131,18 @@ export default function AddProductModal({ isOpen, onClose, refreshProducts }) {
             price: Number(o.price || 0),
           })),
         })),
-
         showInstructions: false,
         countInStock: Number(product.stock || 0),
         isActive: true,
-
         reviews: [],
         rating: 0,
         numReviews: 0,
       };
 
-      console.log('FINAL PAYLOAD:', payload);
-
       await axios.post('/api/admin/products', payload);
 
       // Reset form
-      setProduct({
-        name: '',
-        category: '',
-        price: '',
-        stock: '',
-        headings: [],
-        imageFile: null,
-      });
-
+      setProduct({ name: '', category: '', price: '', stock: '', headings: [], imageFile: null });
       refreshProducts();
       onClose();
     } catch (error) {
@@ -180,7 +159,6 @@ export default function AddProductModal({ isOpen, onClose, refreshProducts }) {
       <ModalContent>
         <ModalHeader>Add New Product</ModalHeader>
         <ModalCloseButton />
-
         <ModalBody>
           <VStack spacing={4} align="stretch">
             {/* IMAGE */}
@@ -188,100 +166,46 @@ export default function AddProductModal({ isOpen, onClose, refreshProducts }) {
               <Text fontWeight="bold">Product Image</Text>
               <Input type="file" accept="image/*" onChange={handleImageChange} />
               {product.imageFile && (
-                <Box mt={2}>
-                  <img
+                <Box mt={2} w="100px" h="100px" position="relative">
+                  <Image
                     src={URL.createObjectURL(product.imageFile)}
                     alt="preview"
-                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    fill
+                    style={{ objectFit: 'cover' }}
                   />
                 </Box>
               )}
             </Box>
 
             {/* BASIC FIELDS */}
-            <Input
-              placeholder="Product Name"
-              name="name"
-              value={product.name}
-              onChange={handleChange}
-            />
-            <Input
-              placeholder="Category"
-              name="category"
-              value={product.category}
-              onChange={handleChange}
-            />
-            <Input
-              placeholder="Base Price"
-              name="price"
-              type="number"
-              value={product.price}
-              onChange={handleChange}
-            />
-            <Input
-              placeholder="Stock"
-              name="stock"
-              type="number"
-              value={product.stock}
-              onChange={handleChange}
-            />
+            <Input placeholder="Product Name" name="name" value={product.name} onChange={handleChange} />
+            <Input placeholder="Category" name="category" value={product.category} onChange={handleChange} />
+            <Input placeholder="Base Price" name="price" type="number" value={product.price} onChange={handleChange} />
+            <Input placeholder="Stock" name="stock" type="number" value={product.stock} onChange={handleChange} />
 
             {/* OPTIONS */}
             <Box>
               <HStack justify="space-between" mb={2}>
                 <Text fontWeight="bold">Options</Text>
-                <Button size="sm" leftIcon={<AddIcon />} onClick={addHeading}>
-                  Add Heading
-                </Button>
+                <Button size="sm" leftIcon={<AddIcon />} onClick={addHeading}>Add Heading</Button>
               </HStack>
 
               {product.headings.map((heading, hIndex) => (
                 <Box key={hIndex} border="1px solid #e2e8f0" p={3} mb={3}>
                   <HStack mb={2}>
-                    <Input
-                      placeholder="Heading Title"
-                      value={heading.title}
-                      onChange={(e) =>
-                        updateHeadingTitle(hIndex, e.target.value)
-                      }
-                    />
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      size="sm"
-                      colorScheme="red"
-                      onClick={() => removeHeading(hIndex)}
-                    />
+                    <Input placeholder="Heading Title" value={heading.title} onChange={(e) => updateHeadingTitle(hIndex, e.target.value)} />
+                    <IconButton icon={<DeleteIcon />} size="sm" colorScheme="red" onClick={() => removeHeading(hIndex)} />
                   </HStack>
 
                   {heading.options.map((option, oIndex) => (
                     <HStack key={oIndex} mb={2}>
-                      <Input
-                        placeholder="Option Name"
-                        value={option.name}
-                        onChange={(e) =>
-                          updateOption(hIndex, oIndex, 'name', e.target.value)
-                        }
-                      />
-                      <Input
-                        placeholder="Extra Price"
-                        type="number"
-                        value={option.price}
-                        onChange={(e) =>
-                          updateOption(hIndex, oIndex, 'price', e.target.value)
-                        }
-                      />
-                      <IconButton
-                        icon={<DeleteIcon />}
-                        size="sm"
-                        colorScheme="red"
-                        onClick={() => removeOption(hIndex, oIndex)}
-                      />
+                      <Input placeholder="Option Name" value={option.name} onChange={(e) => updateOption(hIndex, oIndex, 'name', e.target.value)} />
+                      <Input placeholder="Extra Price" type="number" value={option.price} onChange={(e) => updateOption(hIndex, oIndex, 'price', e.target.value)} />
+                      <IconButton icon={<DeleteIcon />} size="sm" colorScheme="red" onClick={() => removeOption(hIndex, oIndex)} />
                     </HStack>
                   ))}
 
-                  <Button size="sm" leftIcon={<AddIcon />} onClick={() => addOption(hIndex)}>
-                    Add Option
-                  </Button>
+                  <Button size="sm" leftIcon={<AddIcon />} onClick={() => addOption(hIndex)}>Add Option</Button>
                 </Box>
               ))}
             </Box>
@@ -289,12 +213,8 @@ export default function AddProductModal({ isOpen, onClose, refreshProducts }) {
         </ModalBody>
 
         <ModalFooter>
-          <Button mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button colorScheme="blue" onClick={handleSubmit} isLoading={loading}>
-            Save Product
-          </Button>
+          <Button mr={3} onClick={onClose}>Cancel</Button>
+          <Button colorScheme="blue" onClick={handleSubmit} isLoading={loading}>Save Product</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

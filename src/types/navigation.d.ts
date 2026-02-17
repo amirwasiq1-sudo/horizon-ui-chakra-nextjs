@@ -1,9 +1,10 @@
-import { ReactComponentElement } from "react";
+import { ReactElement } from 'react';
 
 export interface IRoute {
-  name: string;
-  layout: string; 
-  icon: ReactComponentElement | string;
-  secondary?: boolean;
-  path: string;
+  layout: string;           // e.g., "/admin"
+  path: string;             // e.g., "/dashboard"
+  name: string;             // Display name
+  icon: ReactElement | string; // React icon component or string
+  secondary?: boolean;      // optional
+  [key: string]: any;       // allow extra fields
 }

@@ -8,7 +8,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ChakraProvider>
-        <Toaster position="top-right" />
+          <Toaster position="top-right" />
           {children}
         </ChakraProvider>
       </body>

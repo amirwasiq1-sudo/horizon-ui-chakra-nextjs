@@ -11,7 +11,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import ProductCard from '../../../components/ProductCard';
+import ProductCard from 'components/ProductCard';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import AddProductModal from './AddProductModal';
@@ -130,3 +130,4 @@ export default function ProductsPage() {
     </Box>
   );
 }
+

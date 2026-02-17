@@ -1,23 +1,40 @@
 'use client';
+
 import dynamic from 'next/dynamic';
-// import Chart from 'react-apexcharts';
-const Chart = dynamic(() => import('react-apexcharts'), {
-  ssr: false,
-});
+import React from 'react';
 
-const LineAreaChart = (props: any) => {
-  const { chartData, chartOptions } = props;
+// Dynamically import Chart to avoid SSR issues
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-  return (
-    // @ts-expect-error
-    <Chart
-      options={chartOptions}
-      type="area"
-      width="100%"
-      height="100%"
-      series={chartData}
-    />
-  );
+interface LineAreaChartProps {
+  chartData?: { name: string; data: number[] }[];
+  chartOptions?: any;
+  width?: string | number;
+  height?: string | number;
+}
+
+const LineAreaChart: React.FC<LineAreaChartProps> = ({
+  chartData,
+  chartOptions,
+  width = '100%',
+  height = '100%',
+}) => {
+  // Provide default series if none is passed
+  const series = chartData || [
+    {
+      name: 'Revenue',
+      data: [10, 41, 35, 51, 49, 62, 69],
+    },
+  ];
+
+  // Provide default options if none is passed
+  const options = chartOptions || {
+    chart: { id: 'area-chart', toolbar: { show: false } },
+    xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'] },
+    stroke: { curve: 'smooth' },
+  };
+
+  return <Chart options={options} series={series} type="area" width={width} height={height} />;
 };
 
 export default LineAreaChart;

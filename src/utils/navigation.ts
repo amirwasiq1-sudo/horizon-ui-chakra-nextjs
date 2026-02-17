@@ -3,15 +3,13 @@ import { IRoute } from "types/navigation";
 // NextJS Requirement
 export const isWindowAvailable = () => typeof window !== "undefined";
 
-export const findCurrentRoute = (routes: IRoute[]): IRoute => { 
-  const foundRoute: IRoute = routes.find(
-    (route) =>
-      isWindowAvailable() &&
-      window.location.href.indexOf(route.layout + route.path) !== -1 &&
-      route
-  );
+export const findCurrentRoute = (routes: IRoute[]): IRoute | undefined => { 
+  if (!isWindowAvailable()) return undefined;
 
-  return foundRoute;
+  return routes.find(
+    (route) =>
+      window.location.href.indexOf(route.layout + route.path) !== -1
+  );
 };
 
 export const getActiveRoute = (routes: IRoute[]): string => {
@@ -19,7 +17,7 @@ export const getActiveRoute = (routes: IRoute[]): string => {
   return route?.name || "Default Brand Text";
 };
 
-export const getActiveNavbar = (routes: IRoute[]): boolean => {
+export const getActiveNavbar = (routes: IRoute[]): boolean | undefined => {
   const route = findCurrentRoute(routes);
   return route?.secondary;
 };

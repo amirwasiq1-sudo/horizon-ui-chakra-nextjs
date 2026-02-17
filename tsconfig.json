@@ -1,16 +1,7 @@
 {
   "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types",
-      "src/types"
-    ],
     "target": "es2016",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "es2015.iterable"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -24,34 +15,22 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": false,
     "downlevelIteration": true,
     "baseUrl": "src",
     "paths": {
-      "@assets/*": ["assets/*"],
-      "@lib/*": ["lib/*"],
-      "@models/*": ["models/*"],
-      "@components/*": ["components/*"],
-      "@api/*": ["app/api/*"]
+      "@assets/*": ["src/assets/*"],
+      "@lib/*": ["src/lib/*"],
+      "@models/*": ["src/models/*"],
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@utils/*": ["src/utils/*"],
+      "types/*": ["types/*"]
     },
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "incremental": false,
+    "plugins": [{ "name": "next" }]
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "./src",
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "next.config.js",
-    ".next/types/**/*.ts"
-  ]
+  "include": ["next-env.d.ts", "src/**/*", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
+

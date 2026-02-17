@@ -70,23 +70,24 @@ export default function ComplexTable(props: { tableData: any }) {
 					h='24px'
 					me='5px'
 					color={
-						info.getValue() === 'Approved' ? (
-							'green.500'
-						) : info.getValue() === 'Disable' ? (
-							'red.500'
-						) : info.getValue() === 'Error' ? (
-							'orange.500'
-						) : null
-					}
+  info.getValue() === 'Approved'
+    ? 'green.500'
+    : info.getValue() === 'Disable'
+    ? 'red.500'
+    : info.getValue() === 'Error'
+    ? 'orange.500'
+    : 'gray.400' // default fallback
+}
+
 					as={
-						info.getValue() === 'Approved' ? (
-							MdCheckCircle
-						) : info.getValue() === 'Disable' ? (
-							MdCancel
-						) : info.getValue() === 'Error' ? (
-							MdOutlineError
-						) : null
-					}
+  info.getValue() === 'Approved'
+    ? MdCheckCircle
+    : info.getValue() === 'Disable'
+    ? MdCancel
+    : info.getValue() === 'Error'
+    ? MdOutlineError
+    : undefined // <-- use undefined instead of null
+}
 				/>
 				<Text color={textColor} fontSize='sm' fontWeight='700'>
 					{info.getValue()}

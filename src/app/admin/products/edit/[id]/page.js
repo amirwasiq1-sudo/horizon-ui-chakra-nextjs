@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import {
   Box,
@@ -25,8 +25,8 @@ export default function EditProductPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Fetch product
-  const fetchProduct = async () => {
+  // ---------------- FETCH PRODUCT ----------------
+  const fetchProduct = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/admin/products/${id}`);
@@ -39,19 +39,19 @@ export default function EditProductPage() {
       toast.error(err.message);
     }
     setLoading(false);
-  };
+  }, [id]);
 
   useEffect(() => {
     if (id) fetchProduct();
-  }, [id]);
+  }, [id, fetchProduct]);
 
+  // ---------------- SAVE PRODUCT ----------------
   const handleSave = async () => {
     if (!product) return;
 
     setSaving(true);
 
     try {
-      // Ensure proper types
       const payload = {
         ...product,
         basePrice: Number(product.basePrice),
@@ -168,11 +168,7 @@ export default function EditProductPage() {
           Show Instructions
         </Switch>
 
-        <Button
-          colorScheme="green"
-          onClick={handleSave}
-          isLoading={saving}
-        >
+        <Button colorScheme="green" onClick={handleSave} isLoading={saving}>
           Save Changes
         </Button>
       </Stack>

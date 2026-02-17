@@ -1,6 +1,6 @@
 import React from 'react';
 
-// chakra imports
+// Chakra imports
 import {
   Box,
   Flex,
@@ -13,45 +13,35 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from '@chakra-ui/react';
-import Content from 'components/sidebar/components/Content';
-import {
-  renderThumb,
-  renderTrack,
-  renderView,
-} from 'components/scrollbar/Scrollbar';
+
+import Content from './components/Content';
+import { renderThumb, renderTrack, renderView } from '../../components/scrollbar/Scrollbar';
 import dynamic from 'next/dynamic';
 
+// Dynamic scrollbars
 const Scrollbars = dynamic(
   () => import('react-custom-scrollbars-2').then((mod) => mod.Scrollbars),
-  { ssr: true },
+  { ssr: true }
 );
 
 // Assets
 import { IoMenuOutline } from 'react-icons/io5';
 import { IRoute } from 'types/navigation';
-import { isWindowAvailable } from 'utils/navigation';
+import { isWindowAvailable } from '../../utils/navigation';
 
-interface SidebarResponsiveProps {
+interface SidebarProps {
   routes: IRoute[];
-}
-
-interface SidebarProps extends SidebarResponsiveProps {
   [x: string]: any;
 }
 
-function Sidebar(props: SidebarProps) {
-  const { routes } = props;
-
-  let variantChange = '0.2s linear';
-  let shadow = useColorModeValue(
+function Sidebar({ routes, ...rest }: SidebarProps) {
+  const variantChange = '0.2s linear';
+  const shadow = useColorModeValue(
     '14px 17px 40px 4px rgba(112, 144, 176, 0.08)',
-    'unset',
+    'unset'
   );
-  // Chakra Color Mode
-  let sidebarBg = useColorModeValue('white', 'navy.800');
-  let sidebarMargins = '0px';
+  const sidebarBg = useColorModeValue('white', 'navy.800');
 
-  // SIDEBAR
   return (
     <Box display={{ sm: 'none', xl: 'block' }} position="fixed" minH="100%">
       <Box
@@ -59,10 +49,11 @@ function Sidebar(props: SidebarProps) {
         transition={variantChange}
         w="300px"
         h="100vh"
-        m={sidebarMargins}
+        m="0px"
         minH="100%"
         overflowX="hidden"
         boxShadow={shadow}
+        {...rest}
       >
         <Scrollbars universal={true}>
           <Content routes={routes} />
@@ -72,18 +63,12 @@ function Sidebar(props: SidebarProps) {
   );
 }
 
-// FUNCTIONS
-
-export function SidebarResponsive(props: SidebarResponsiveProps) {
-  let sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
-  let menuColor = useColorModeValue('gray.400', 'white');
-  // // SIDEBAR
+// Responsive Sidebar
+export function SidebarResponsive({ routes }: { routes: IRoute[] }) {
+  const sidebarBackgroundColor = useColorModeValue('white', 'navy.800');
+  const menuColor = useColorModeValue('gray.400', 'white');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
-
-  const { routes } = props;
-  // let isWindows = navigator.platform.startsWith("Win");
-  //  BRAND
+  const btnRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <Flex display={{ sm: 'flex', xl: 'none' }} alignItems="center">
@@ -98,6 +83,7 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
           _hover={{ cursor: 'pointer' }}
         />
       </Flex>
+
       <Drawer
         isOpen={isOpen}
         onClose={onClose}
@@ -132,6 +118,5 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
     </Flex>
   );
 }
-// PROPS
 
 export default Sidebar;
